@@ -75,7 +75,7 @@ trait sql_trait {
                 [$hasexpression] = $parser->has_expression($el);
                 $max--;
             }
-            if (!is_string($el)) {
+            if (!is_string($el) && !is_int($el)) {
                 throw new \moodle_exception('reader_sql:finalsql_not_string', 'tool_dataflows');
             }
             return $el;
