@@ -40,6 +40,7 @@ use tool_dataflows\local\step;
 function tool_dataflows_step_types() {
     return [
         new step\connector_abort,
+        new step\connector_adl,
         new step\connector_append_file,
         new step\connector_compression,
         new step\connector_copy_file,
