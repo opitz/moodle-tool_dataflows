@@ -16,6 +16,7 @@
 
 namespace tool_dataflows\local\step;
 
+use core\aws\client_factory;
 use tool_dataflows\helper;
 
 /**
@@ -98,15 +99,6 @@ trait s3_trait {
         global $CFG;
         // Engine step contains the execution context, configuration, variables etc.
 
-        try {
-            // Only autoload the AWS SDK at runtime.
-            require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
-        } catch (\Exception $e) {
-            // TODO specific exception.
-            $this->enginestep->log(get_string('local_aws_missing', 'tool_dataflows'));
-            return $input;
-        }
-
         $stepvars = $this->get_variables();
         $config = $stepvars->get('config');
         $connectionoptions = [
@@ -123,7 +115,7 @@ trait s3_trait {
         }
 
         try {
-            $s3client = \local_aws\local\client_factory::get_client('\Aws\S3\S3Client', $connectionoptions);
+            $s3client = client_factory::get_client('\Aws\S3\S3Client', $connectionoptions);
         } catch (\Exception $e) {
             // TODO specific exception.
             $this->enginestep->log(get_string('s3_configuration_error', 'tool_dataflows'));

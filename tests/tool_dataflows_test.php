@@ -167,27 +167,6 @@ class tool_dataflows_test extends \advanced_testcase {
     }
 
     /**
-     * Test custom step type based on the callback defined in the manager.
-     *
-     * @runInSeparateProcess
-     * @covers \tool_dataflows\dataflow\manager::get_steps_types
-     */
-    public function test_local_aws_custom_step() {
-        // The test should only run if this condition is true.
-        $localawsexampleclass = class_exists(\local_aws\step\example::class);
-        if (!$localawsexampleclass) {
-            $this->markTestSkipped('local_aws with custom step not located, skipping this specific test.');
-            return;
-        }
-
-        $steptypes = manager::get_steps_types();
-        $classnames = array_map(function ($class) {
-            return get_class($class);
-        }, $steptypes);
-        $this->assertContains(\local_aws\step\example::class, $classnames);
-    }
-
-    /**
      * Tests whether the is_dag graph function is giving the expected output
      *
      * @covers \tool_dataflows\graph::is_dag

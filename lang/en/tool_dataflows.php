@@ -285,7 +285,6 @@ $string['config_user_invalid'] = 'User \'{$a}\' is invalid or does not exist.';
 $string['invalid_config'] = 'Invalid configuration';
 $string['non_reader_steps_must_have_flow_upstreams'] = 'Non reader steps must have at least one flow step dependency.';
 $string['format_not_supported'] = 'The format \'{$a}\' is not supported.';
-$string['local_aws_missing'] = 'Failed to load AWS dependencies. Please ensure local_aws is installed.';
 $string['s3_copy_failed'] = 'S3 copy failed. {$a}';
 $string['s3_configuration_error'] = 'S3 client creation failed with provided configuration. Check values are valid.';
 $string['missing_source_file'] = 'Unable to open local file for copying.';
