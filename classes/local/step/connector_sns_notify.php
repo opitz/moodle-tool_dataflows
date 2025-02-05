@@ -18,6 +18,8 @@ namespace tool_dataflows\local\step;
 
 use Aws\Exception\AwsException;
 
+use \core\aws\client_factory;
+
 /**
  * Amazon SNS event notification step.
  *
@@ -75,15 +77,6 @@ class connector_sns_notify extends connector_step {
     public function execute($input = null) {
         global $CFG;
 
-        try {
-            // Only autoload the AWS SDK at runtime.
-            require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
-        } catch (\Exception $e) {
-            // TODO specific exception.
-            $this->enginestep->log->error(get_string('local_aws_missing', 'tool_dataflows'));
-            return false;
-        }
-
         // Do not execute operations during a dry run.
         if ($this->enginestep->engine->isdryrun) {
             $this->enginestep->log->info('Skip SNS notification as this is a dry run.');
@@ -107,7 +100,7 @@ class connector_sns_notify extends connector_step {
         }
 
         try {
-            $snsclient = \local_aws\local\client_factory::get_client('\Aws\Sns\SnsClient', $connectionoptions);
+            $snsclient = client_factory::get_client('\Aws\Sns\SnsClient', $connectionoptions);
         } catch (\Exception $e) {
             // TODO specific exception.
             $this->enginestep->log->error(get_string('s3_configuration_error', 'tool_dataflows'));
