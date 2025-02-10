@@ -46,10 +46,11 @@ $string['gzip_exec_path_desc'] = 'Path to gzip executable';
 $string['gpg_key_dir'] = 'Path to keyring directory';
 $string['gpg_key_dir_desc'] = 'Path to keyring directory';
 $string['log_handlers'] = 'Log handlers';
-$string['log_handlers_desc'] = 'Additional log handlers to output dataflow logs to more destinations. The handler for mtrace is always active and cannot be disabled. Applying the settings at the dataflow level will override settings applied at the site admin level.';
+$string['log_handlers_desc'] = 'Additional log handlers to output dataflow logs to more destinations. The handler for mtrace is always active and cannot be disabled. Applying the settings at the dataflow level will override settings applied at the site admin level.<br/>
+Note - The browser developer console handler is not recommended for dataflows that output a large amount of logs, as it will consume large amounts of memory. It also sends dataflow logs to the users developer console which will be visible by them, which may be undesirable.';
 $string['log_handler_file_per_dataflow'] = 'File per dataflow - [dataroot]/tool_dataflows/Ymd_{dataflowid}.log';
 $string['log_handler_file_per_run'] = 'File per run - [dataroot]/tool_dataflows/{dataflowid}/Ymd_his_{runid}.log';
-$string['log_handler_browser_console'] = 'Browser Console';
+$string['log_handler_browser_console'] = 'Browser Developer Console';
 $string['permitted_dirs'] = 'Permitted directories';
 $string['permitted_dirs_desc'] = "List directories here to allow them to be read from/written to by dataflow steps.
     One directory per line. Each directory must be an absolute path. You can use the place holder '{\$a}' for the
