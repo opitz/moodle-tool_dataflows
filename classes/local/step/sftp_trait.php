@@ -281,9 +281,11 @@ trait sftp_trait {
             // Upload to remote.
             $this->upload($sftp, $sourcepath, $targetpath);
         } catch (\Throwable $e) {
+            $this->enginestep->log->error($e->getMessage());
             if (isset($sftp)) {
                 $sftp->disconnect();
             }
+            throw new \moodle_exception($e->getMessage(), 'tool_dataflows');
         }
 
         return $input;
