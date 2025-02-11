@@ -305,7 +305,7 @@ class helper {
         }
         // HTTP/1.1 defines the sequence CR LF as the end-of-line marker for all
         // protocol elements except the entity-body (see appendix 19.3 for tolerant applications).
-        // See https://datatracker.ietf.org/doc/html/rfc2616#section-2.2
+        // See https://datatracker.ietf.org/doc/html/rfc2616#section-2.2.
         $lines = explode("\n", str_replace("\r\n", "\n", $content));
         $headerlines = [];
         $current = null;
