@@ -286,12 +286,13 @@ class visualiser {
         echo \html_writer::div($contents, 'text-center p-4 overflow-auto');
 
         if (!$valid) {
+            $prelude = \html_writer::tag('p', get_string('invalid_dataflow_prelude', 'tool_dataflows'));
             $errors = '';
             foreach ($validation as $message) {
                 $errors .= \html_writer::tag('li', $message);
             }
             $errors = \html_writer::tag('ul', $errors);
-            echo $output->notification($errors);
+            echo $output->notification($prelude . $errors);
         }
 
         echo $output->heading($pageheading);

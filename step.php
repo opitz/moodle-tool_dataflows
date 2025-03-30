@@ -201,6 +201,7 @@ $data = [
 if (isset($steptype)) {
     $data['inputrequirements'] = visualiser::get_link_expectations($steptype, 'input');
     $data['outputrequirements'] = visualiser::get_link_expectations($steptype, 'output');
+    $data['steptypedesc'] = $steptype->get_description();
 }
 
 echo $output->render_from_template('tool_dataflows/step-summary', $data);

@@ -183,7 +183,7 @@ abstract class base_step {
     }
 
     /**
-     * Get the step's id
+     * Get the step type's id
      *
      * This defaults to the base name of the class which is ok in the most
      * cases but if you have a step which can have multiple instances then
@@ -219,6 +219,23 @@ abstract class base_step {
     public function get_name(): string {
         $id = $this->get_id();
         return get_string("step_name_{$id}", $this->get_component());
+    }
+
+    /**
+     * Returns a description/tutorial about the step type.
+     *
+     * Every step type should have short description/tutorial.
+     *
+     * @return string
+     */
+    public function get_description(): string {
+        $id = $this->get_id();
+        $stringid = "step_type_desc_{$id}";
+        if (!get_string_manager()->string_exists($stringid, $this->get_component())) {
+            debugging('Step description missing for dataflow step' . $this->get_component() . ':' . $id);
+            return get_string('step_type_desc_missing', 'tool_dataflows');
+        }
+        return get_string($stringid, $this->get_component());
     }
 
     /**

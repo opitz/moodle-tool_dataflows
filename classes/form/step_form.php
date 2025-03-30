@@ -103,6 +103,7 @@ class step_form extends \core\form\persistent {
         foreach ($options as $opt) {
             $select->addOption($opt['text'], $opt['key'], $opt['attr']);
         }
+        $mform->addElement('static', 'field_dependson_help', '', get_string('field_dependson_help', 'tool_dataflows'));
 
         $select->setMultiple(true);
 

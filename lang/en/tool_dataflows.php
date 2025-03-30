@@ -96,8 +96,8 @@ $string['remove_dataflow'] = 'Remove dataflow';
 $string['remove_dataflow_confirm'] = 'Are you sure you want to remove the dataflow \'{$a}\'? This action is irreversible.';
 $string['remove_dataflow_successful'] = 'Removed dataflow \'{$a}\' successfully.';
 $string['concurrency_enabled'] = 'Enable concurrent running';
-$string['field_vars'] = 'Variables';
-$string['field_vars_help'] = 'Dataflow variables that can be accessed via expressions within all dataflow steps as {$a->reference}.
+$string['field_vars'] = 'User defined variables';
+$string['field_vars_help'] = 'Extra variables that can be accessed via expressions within all dataflow steps as {$a->reference}.
  Values are defined in YAML format (&lt;var&gt;: &lt;value&gt;), with nested values being converted into a dot separated sequence.
   Example:{$a->example} Note: If you use \'[dataroot]\', make sure to quote the value or it will be interpreted as an array.';
 $string['error:vars_not_object'] = 'Vars must form a YAML object (Define each var as &lt;var&gt;: &lt;value&gt;)';
@@ -119,6 +119,7 @@ $string['dataflow_file'] = 'Dataflow file';
 // Dataflow steps (table).
 $string['back_to'] = 'Back to Dataflow';
 $string['field_dependson'] = 'Depends on';
+$string['field_dependson_help'] = 'Select from the above list. These steps will immediately preceed the current step in the dataflow';
 $string['remove_confirm'] = 'Are you sure you want to remove the step \'{$a}\'? This action is irreversible.';
 $string['remove_step_successful'] = 'Removed step \'{$a}\' successfully.';
 $string['remove_step'] = 'Remove step';
@@ -136,7 +137,7 @@ $string['currentstate'] = 'Current state';
 $string['endstate'] = 'End state';
 $string['strftimedatetimeaccurate'] = '%d %B %Y, %I:%M:%S %p';
 
-// Step names.
+// Step type names.
 $string['step_name_connector_directory_file_count'] = 'Directory file count';
 $string['step_name_connector_directory_file_list'] = 'Directory file list';
 $string['step_name_connector_sftp_directory_file_list'] = 'SFTP directory file list';
@@ -195,6 +196,12 @@ $string['step_name_trigger_event'] = 'Moodle event';
 $string['step_name_flow_sql'] = 'SQL';
 $string['step_name_connector_sql'] = 'SQL';
 
+// Step type descriptions.
+$string['step_type_desc_missing'] = '<There is no description for this step type>';
+$string['step_type_desc_trigger_cron'] = 'The cron trigger will cause the flow to run at the configured times. The configuration schedule uses the Unix crontab format.';
+$string['step_type_desc_trigger_cron'] = 'The cron trigger will cause the flow to run at the configured times. The configuration schedule uses the Unix crontab format.';
+$string['step_type_desc_reader_directory_file_list'] = 'Reads the list of files in a directory and supplies the filenames as the step output.';
+
 // Step (type) groups.
 $string['stepgrouptriggers'] = 'Triggers';
 $string['stepgroupconnectors'] = 'Connectors';
@@ -206,13 +213,13 @@ $string['stepgroupflows'] = 'Flows';
 $string['stepgroupreaders'] = 'Readers';
 
 // Step (form).
-$string['available_fields'] = 'Available Fields';
-$string['available_fields_help'] = 'The fields listed below can be referenced in any step configuration, e.g. {$a}';
+$string['available_fields'] = 'Available variables';
+$string['available_fields_help'] = 'The variables listed below can be referenced from this step. E.g. {$a}';
 $string['field_description'] = 'Description';
 $string['field_alias'] = 'Alias';
-$string['field_alias_help'] = 'A reference to this step, unique to this dataflow. This can be used in expressions to access the step. It must be made up of only letters, numbers, or underscores (\'_\'). If empty, then a snake case version of the name will be used. For example, if the name is "My Step", it will be populate this field as "my_step"';
+$string['field_alias_help'] = 'This step\'s variable name. It must be unique to this dataflow. This is used in expressions to access the step. It must be made up of only letters, numbers, or underscores (\'_\'). If empty, then a snake case version of the name will be used. For example, if the name is "My Step", it will be populate this field as "my_step"';
 $string['field_config'] = 'Configuration';
-$string['field_step_vars_help'] = "Variables that can be accessed from any step in the form {\$a->reference}. These variables are updated after a step has been executed, or after every iteration in a flow step. The setting is defined in YAML format.
+$string['field_step_vars_help'] = "Extra Variables that can be accessed from any step in the form {\$a->reference}. The setting is defined in YAML format.<br>
     Example: {\$a->example}";
 $string['field_type'] = 'Step type';
 $string['update_step'] = 'Update step';
@@ -252,7 +259,7 @@ $string['requires'] = 'Requires {$a->str1} and {$a->str2}.';
 $string['runningfor'] = 'Running for {$a}';
 
 // Step Chooser.
-$string['stepchooser'] = 'Step chooser';
+$string['stepchooser'] = 'Step type chooser';
 
 // Warnings / Errors.
 $string['nametaken'] = 'The name \'{$a}\' is already in use for this dataflow.';
@@ -311,6 +318,7 @@ $string['file_missing'] = 'File is missing \'{$a}\'.';
 $string['property_not_supported'] = 'Property \'{$a->property}\' not supported in \'{$a->classname}\'';
 $string['adl_process_blob_failed'] = 'Failed to {$a->action} blob: {$a->error}';
 $string['adl_copy_failed'] = 'ADL copy failed. {$a}';
+$string['invalid_dataflow_prelude'] = 'This dataflow is invalid. Invalid dataflows can be edited, exported and imported, but will not be able to run.';
 
 // JSON errors.
 $string['reader_json:failed_to_decode_json'] = 'Invalid JSON, failed to decode JSON file "{$a}".';
