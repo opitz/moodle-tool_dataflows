@@ -40,12 +40,11 @@ abstract class base_step {
     /** @var step The step definition use to create the engine step. */
     protected $stepdef = null;
 
-    /**
-     * This is autopopulated by the dataflows manager.
-     *
-     * @var string - The component / plugin this step belongs to.
-     */
-    protected $component = 'tool_dataflows';
+    /** @var string The id/name of the step type.  */
+    protected $id = null;
+
+    /** @var string - The component / plugin this step belongs to. */
+    protected $component = 'core';
 
     /* Input and Output flow and connectors, default all things to zero */
 
@@ -77,6 +76,14 @@ abstract class base_step {
         // Sets the engine if it has been provided.
         if (isset($engine)) {
             $this->set_engine($engine, $stepdef);
+        }
+
+        // Extract the id and component.
+        $class = get_class($this);
+        $namespaces = explode("\\", $class);
+        $this->id = end($namespaces);
+        if (count($namespaces) > 1) {
+            $this->component = reset($namespaces);
         }
     }
 
@@ -147,7 +154,12 @@ abstract class base_step {
     }
 
     /**
-     * Get the frankenstyle component name
+     * Get the frankenstyle component (plugin) name
+     *
+     * By default, the component is set to the top level namespace in the class. By convention, this is the
+     * component. If there is no namespace, then it will default to 'core'.
+     *
+     * Override this, or use set_component() if you need to provide a custom component name.
      *
      * @return string
      */
@@ -156,7 +168,7 @@ abstract class base_step {
     }
 
     /**
-     * Get the frankenstyle component name
+     * Set the frankenstyle component (plugin) name
      *
      * @param string $component name
      */
@@ -192,9 +204,7 @@ abstract class base_step {
      * @return string must be unique within a component
      */
     public function get_id(): string {
-        $class = get_class($this);
-        $id = explode("\\", $class);
-        return end($id);
+        return $this->id;
     }
 
     /**

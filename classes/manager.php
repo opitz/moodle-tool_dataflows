@@ -40,7 +40,6 @@ class manager {
             foreach ($plugins as $plugin => $pluginfunction) {
                 $result = $pluginfunction();
                 foreach ($result as $step) {
-                    $step->set_component($plugintype . '_' . $plugin);
                     $steps[] = $step;
                 }
             }
