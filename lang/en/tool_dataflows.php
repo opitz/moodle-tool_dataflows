@@ -195,12 +195,14 @@ $string['step_name_writer_stream'] = 'Stream writer';
 $string['step_name_trigger_event'] = 'Moodle event';
 $string['step_name_flow_sql'] = 'SQL';
 $string['step_name_connector_sql'] = 'SQL';
+$string['step_name_reader_array'] = 'Array reader';
 
 // Step type descriptions.
 $string['step_type_desc_missing'] = '<There is no description for this step type>';
 $string['step_type_desc_trigger_cron'] = 'The cron trigger will cause the flow to run at the configured times. The configuration schedule uses the Unix crontab format.';
 $string['step_type_desc_trigger_cron'] = 'The cron trigger will cause the flow to run at the configured times. The configuration schedule uses the Unix crontab format.';
 $string['step_type_desc_reader_directory_file_list'] = 'Reads the list of files in a directory and supplies the filenames as the step output.';
+$string['step_type_desc_reader_array'] = 'Supplies a stream sourced from an expression.';
 
 // Step (type) groups.
 $string['stepgrouptriggers'] = 'Triggers';
@@ -376,6 +378,17 @@ $string['writer_csv:fail_to_encode'] = 'Failed to encode CSV.';
 // SQL trait.
 $string['sql_trait:sql_param_type_not_valid'] = 'The SQL parameter must be a valid type (string or int), found {$a}';
 $string['sql_trait:variable_not_valid_in_position_replacement_text'] = "Invalid expression \${{ {\$a->expression} }} as `{\$a->expressionpath}` could not be resolved at line {\$a->line} character {\$a->column} in:\n{\$a->sql}"; // phpcs:disable moodle.Strings.ForbiddenStrings.Found
+
+// Reader array.
+$string['reader_array:source'] = 'Source';
+$string['reader_array:source_help'] = 'The source of the array. This must evaluate to an array or a string. If it is a string, it will be read like a CSV row.';
+$string['reader_array:separator'] = 'Separator character';
+$string['reader_array:separator_help'] = 'For a string source, this character separates the values.';
+$string['reader_array:enclosure'] = 'Enclosure character';
+$string['reader_array:enclosure_help'] = 'For a string source, this can be used to enclose values. To include the enclosure character within a value, double it. E.g. "ab""c" reads as \'ab"c\'';
+$string['reader_array:separator_must_be_one_char'] = 'Separator must be a single character';
+$string['reader_array:enclosure_must_be_one_char'] = 'Enclosure must be a single character';
+$string['reader_array:must_be_array_or_string'] = 'Source expression must evaluate to an array or a CSV style string';
 
 // Reader SQL.
 $string['reader_sql:sql'] = 'SQL';
