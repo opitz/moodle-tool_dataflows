@@ -1,0 +1,50 @@
+name: 'Array reader demo'
+description: "This sample demonstrates the array reader. The first flow block reads in from a string and outputs a JSON structure. The second flow block reads in from an array defined below and outputs a CSV file. The two flows are separated by a no-op step. Look at the steps for more details.\r\nThe flows output files to the internal temp directory. To keep the files, change 'outdir' below to a suitable directory (with a trailing slash), and add it to the permitted directories settings."
+vars:
+  source:
+    - one
+    - two
+    - three
+  outdir: null
+config:
+  enabled: '1'
+  concurrencyenabled: '1'
+  loghandlers: ''
+steps:
+  array_reader_from_string:
+    name: 'Array reader from string'
+    description: 'This will read the source string like a CSV row. The generated array will be (in PHP) [''first'', ''second'', ''third, and half'', ''forth''].'
+    type: tool_dataflows\local\step\reader_array
+    config:
+      source: 'first,second,"third, and half",forth'
+      separator: ','
+      enclosure: '"'
+  write_to_json:
+    name: 'Write to JSON'
+    description: "This will write the stream contents to a JSON encoded file. The contents should be [\"first\",\"second\",\"third, and half\", \"forth\"].\r\nTo keep the file, change the name to a non-relative file. (Make sure to add the directory to the permitted directory list)."
+    depends_on: array_reader_from_string
+    type: tool_dataflows\local\step\writer_stream
+    config:
+      streamname: '${{dataflow.vars.outdir}}out.json'
+      format: json
+  no-op:
+    name: No-op
+    depends_on: write_to_json
+    type: tool_dataflows\local\step\connector_noop
+  array_reader_from_variable:
+    name: 'Array reader from variable'
+    description: 'This will read in from a variable that is an array. The array is (in PHP) [''one'',''two'',''three'']. The separator and enclosure settings will have no effect in this case.'
+    depends_on: no-op
+    type: tool_dataflows\local\step\reader_array
+    config:
+      source: '${{dataflow.vars.source}}'
+      separator: ','
+      enclosure: '"'
+  write_to_csv:
+    name: 'Write to CSV'
+    description: "This will output the stream to a CSV file. The generated file will contain three lines with 'one', 'two' and 'three' on separate lines.\r\nTo keep the file, change the name to a non-relative file. (Make sure to add the directory to the permitted directory list)."
+    depends_on: array_reader_from_variable
+    type: tool_dataflows\local\step\writer_stream
+    config:
+      streamname: '${{dataflow.vars.outdir}}out.csv'
+      format: csv

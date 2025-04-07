@@ -89,6 +89,7 @@ function tool_dataflows_step_types() {
         new step\flow_transformer_regex,
         new step\flow_update_user,
         new step\flow_web_service,
+        new step\reader_array,
         new step\reader_csv,
         new step\reader_directory_file_list,
         new step\reader_json,
