@@ -30,5 +30,5 @@ $plugin->release = 2025021100;
 $plugin->requires = 2024100700;    // Our lowest supported Moodle (4.5.0).
 $plugin->supported = [405, 405];
 $plugin->component = 'tool_dataflows';
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = [];
