@@ -86,6 +86,8 @@ class expression_provider implements ExpressionFunctionProviderInterface {
             ExpressionFunction::fromPhp('str_replace', 'str_replace'),
             ExpressionFunction::fromPhp('array_column', 'array_column'),
             ExpressionFunction::fromPhp('array_combine', 'array_combine'),
+            ExpressionFunction::fromPhp('json_encode', 'json_encode'),
+            ExpressionFunction::fromPhp('htmlspecialchars', 'htmlspecialchars'),
         ];
     }
 }
