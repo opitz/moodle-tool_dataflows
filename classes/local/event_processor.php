@@ -169,8 +169,7 @@ class event_processor {
         global $DB;
 
         // Get all event triggers.
-        $type = $DB->sql_compare_text('tool_dataflows\local\step\trigger_event');
-        $eventsteps = \tool_dataflows\step::get_records(['type' => $type]);
+        $eventsteps = \tool_dataflows\step::get_records(['type' => 'tool_dataflows\local\step\trigger_event']);
 
         $stepslistening = array_filter($eventsteps, function ($step) use ($eventname) {
             // Ensure the configured event for the step matches the event name.
