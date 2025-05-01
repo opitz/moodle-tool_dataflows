@@ -61,7 +61,6 @@ class reader_csv extends reader_step {
      * Returns an iterator based on the results read from the CSV contents
      */
     public function csv_contents_generator() {
-        $maxlinelength = 1000;
         $variables = $this->get_variables();
         $config = $variables->get('config');
         $strheaders = $config->headers;
@@ -97,7 +96,7 @@ class reader_csv extends reader_step {
             $numheaders = count($headers);
             $rownumber = 1; // First row is always headers.
             $errors = ['header_field_count_mismatch' => 0];
-            while (($data = fgetcsv($handle, $maxlinelength, $delimiter)) !== false) {
+            while (($data = fgetcsv($handle, 0, $delimiter)) !== false) {
                 $rownumber++;
                 $numfields = count($data);
                 if ($numfields !== $numheaders) {
