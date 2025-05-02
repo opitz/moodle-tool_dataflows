@@ -234,18 +234,17 @@ trait compression_trait {
     private function execute_gzip($config) {
         $gzip = get_config('tool_dataflows', 'gzip_exec_path');
         $from = escapeshellarg($config->from);
-        $to = escapeshellarg($config->to);
 
         $compressionmode = $config->command == 'decompress' ? '-d' : '';
-        $movefilename = $config->command == 'compress' ? $config->from . '.gz' : rtrim($config->from, '.gz');
-        $movefilename = escapeshellarg($movefilename);
+        // File that gzip outputs to.
+        $gzipoutfile = $config->command == 'compress' ? $config->from . '.gz' : rtrim($config->from, '.gz');
 
         // See https://www.gnu.org/software/gzip/manual/html_node/Invoking-gzip.html.
         // -f: force override destination file if it exists
         // -v: verbose
         // -k: keep input file
         // 2>&1: pipe stderror to stdout.
-        $gzipcommand = "{$gzip} -f -v -k {$compressionmode} {$from} 2>&1 && mv {$movefilename} {$to}";
+        $gzipcommand = "{$gzip} -f -v -k {$compressionmode} {$from} 2>&1";
         $this->log->debug("Command: " . $gzipcommand);
 
         // Execute the gzip command.
@@ -253,6 +252,15 @@ trait compression_trait {
         $result = null;
         exec($gzipcommand, $output, $result);
         $success = $result === 0;
+
+        // Rename to the 'to' filename (if gzip was successful).
+        if ($success && ($gzipoutfile !== $config->to)) {
+            $success = $success && rename($gzipoutfile, $config->to);
+            if (!$success) {
+                $error = error_get_last();
+                $output = [$error['message']];
+            }
+        }
 
         // Emit in error logs.
         if (!$success) {
