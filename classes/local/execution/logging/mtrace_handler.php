@@ -17,6 +17,7 @@
 namespace tool_dataflows\local\execution\logging;
 
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\LogRecord;
 
 /**
  * An environment for logging information about dataflow execution.
@@ -31,24 +32,24 @@ class mtrace_handler extends AbstractProcessingHandler {
     /**
      * Default handler for Moodle.
      *
-     * @param array $record the log record
+     * @param LogRecord $record the log record
      * @return bool
      **/
-    public function handle(array $record): bool {
+    public function handle(LogRecord $record): bool {
         if ($this->isHandling($record)) {
             $record['formatted'] = trim($this->getFormatter()->format($record));
             $this->write($record);
             return true;
         }
-        return $this->handler->handle($record);
+        return $this->handle($record);
     }
 
     /**
      * Writes the record down to the log of the implementing handler
      *
-     * @param  array $record
+     * @param  LogRecord $record
      */
-    protected function write(array $record): void {
+    protected function write(LogRecord $record): void {
         mtrace($record['formatted']);
     }
 }

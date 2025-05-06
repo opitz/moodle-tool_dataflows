@@ -5,7 +5,7 @@ vars:
     - one
     - two
     - three
-  outdir: null
+  outdir: ''
 config:
   enabled: '1'
   concurrencyenabled: '1'
@@ -13,7 +13,7 @@ config:
 steps:
   array_reader_from_string:
     name: 'Array reader from string'
-    description: 'This will read the source string like a CSV row. The generated array will be (in PHP) [''first'', ''second'', ''third, and half'', ''forth''].'
+    description: "This will read the source string like a CSV row. The generated array will be (in PHP) ['first', 'second', 'third, and half', 'forth']."
     type: tool_dataflows\local\step\reader_array
     config:
       source: 'first,second,"third, and half",forth'
@@ -27,14 +27,17 @@ steps:
     config:
       streamname: '${{dataflow.vars.outdir}}out.json'
       format: json
-  no-op:
-    name: No-op
+  display_json_file:
+    name: 'Display JSON file'
+    description: 'Shows the contents of the JSON fie produced by the previous flow block.'
     depends_on: write_to_json
-    type: tool_dataflows\local\step\connector_noop
+    type: tool_dataflows\local\step\connector_debug_file_display
+    config:
+      streamname: '${{steps.write_to_json.config.streamname}}'
   array_reader_from_variable:
     name: 'Array reader from variable'
-    description: 'This will read in from a variable that is an array. The array is (in PHP) [''one'',''two'',''three'']. The separator and enclosure settings will have no effect in this case.'
-    depends_on: no-op
+    description: "This will read in from a variable that is an array. The array is (in PHP) ['one','two','three']. The separator and enclosure settings will have no effect in this case."
+    depends_on: display_json_file
     type: tool_dataflows\local\step\reader_array
     config:
       source: '${{dataflow.vars.source}}'
@@ -48,3 +51,10 @@ steps:
     config:
       streamname: '${{dataflow.vars.outdir}}out.csv'
       format: csv
+  display_csv_file:
+    name: 'Display CSV file'
+    description: 'Displays the contents of the CSV file created in the previous flow block'
+    depends_on: write_to_csv
+    type: tool_dataflows\local\step\connector_debug_file_display
+    config:
+      streamname: '${{steps.write_to_csv.config.streamname}}'
