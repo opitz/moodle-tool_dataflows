@@ -1,0 +1,5 @@
+services:
+  dataflows:
+    build: .
+    volumes:
+      - "./:/code"

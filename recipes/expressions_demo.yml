@@ -1,0 +1,34 @@
+name: 'Expressions demo'
+description: "A quick demonstration of expressions. The first step evaluates a number of expressions and writes them to a file. The second step simply displays the contents of that file to the console. The contents displayed should be as follows:\r\n\r\na - \\abc\\d\"ef'\r\nb - \"\\\\abc\\\\d\\\"ef'\"\r\nc - \\abc\\d&quot;ef'\r\nd - ${{--++}}\r\ne - 11\r\nf - 5"
+vars:
+  abc: def
+config:
+  enabled: '0'
+  concurrencyenabled: '0'
+  loghandlers: ''
+steps:
+  file_put_content:
+    name: 'File put content'
+    description: ada
+    type: tool_dataflows\local\step\connector_file_put_content
+    config:
+      path: out.json
+      content: |-
+        a - ${{vars.a}}
+        b - ${{vars.b}}
+        c - ${{vars.c}}
+        d - ${{vars.d}}
+        e - ${{3 + 8}}
+        f - ${{vars.f -1}}
+    vars:
+      a: '\abc\d"ef'''
+      b: '${{json_encode(vars.a)}}'
+      c: '${{htmlspecialchars(vars.a)}}'
+      d: '${{--++}}'
+      f: 6
+  file_contents_display:
+    name: 'File contents display'
+    depends_on: file_put_content
+    type: tool_dataflows\local\step\connector_debug_file_display
+    config:
+      streamname: out.json

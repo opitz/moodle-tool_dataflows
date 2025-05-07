@@ -20,8 +20,10 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\BrowserConsoleHandler;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
+use Monolog\LogRecord;
+use Monolog\Logger;
+use Monolog\Level;
 use Monolog\Processor\PsrLogMessageProcessor;
-use Symfony\Bridge\Monolog\Logger;
 use tool_dataflows\dataflow;
 use tool_dataflows\exportable;
 use tool_dataflows\helper;
@@ -353,7 +355,7 @@ class engine {
         // Register signal handler - if a signal caused the dataflow to stop.
         \core_shutdown_manager::register_signal_handler(function ($signo){
             $error = error_get_last();
-            $this->logger->log(Logger::NOTICE, 'Engine: shutdown signal ({signo}) received', [
+            $this->logger->log(Level::Notice, 'Engine: shutdown signal ({signo}) received', [
                 'signo' => $signo,
                 'lasterror' => $error,
             ]);
@@ -362,12 +364,12 @@ class engine {
 
         // Register shutdown handler - if request is ended by client, abort and finalise flow.
         \core_shutdown_manager::register_function(function (){
-            $this->logger->log(Logger::DEBUG, 'Engine: shutdown handler was called');
+            $this->logger->log(Level::Debug, 'Engine: shutdown handler was called');
 
             // If the script has stopped and flow is not finalised then abort.
             if (!in_array($this->status, [self::STATUS_FINALISED, self::STATUS_ABORTED])) {
                 $error = error_get_last();
-                $this->logger->log(Logger::ERROR, 'Engine: shutdown happened abruptly', ['lasterror' => $error]);
+                $this->logger->log(Level::Error, 'Engine: shutdown happened abruptly', ['lasterror' => $error]);
                 $this->set_status(self::STATUS_ABORTED);
 
                 $notifyreason = new \Exception('Shutdown handler triggered abort. Last error: ' . $error);
@@ -568,7 +570,7 @@ class engine {
                 $context = [];
             }
         }
-        $this->log('Engine: aborting steps', $message ? array_merge(['reason' => $message], $context) : [], Logger::NOTICE);
+        $this->log('Engine: aborting steps', $message ? array_merge(['reason' => $message], $context) : [], Level::Notice);
         $this->exception = $reason;
         foreach ($this->enginesteps as $enginestep) {
             $status = $enginestep->status;
@@ -611,7 +613,7 @@ class engine {
      * @param mixed $context
      * @param mixed $level
      */
-    public function log(string $message, $context = [], $level = Logger::INFO) {
+    public function log(string $message, $context = [], $level = Level::Info) {
         $this->logger->log($level, $message, $context);
     }
 
@@ -683,9 +685,9 @@ class engine {
             'status' => get_string('engine_status:'.self::STATUS_LABELS[$this->status], 'tool_dataflows'),
         ];
 
-        $level = Logger::INFO;
+        $level = Level::Info;
         if (in_array($status, self::STATUS_TERMINATORS, true)) {
-            $level = Logger::NOTICE;
+            $level = Level::Notice;
             $context['export'] = $this->get_export_data();
         }
         $this->logger->log($level, "Engine: dataflow '{status}'", $context);
@@ -774,6 +776,7 @@ class engine {
      */
     private function setup_logging() {
         global $CFG;
+
         // Initalise a new run (only for non-dry runs). This should only be
         // created when the engine is executed.
         $channel = 'dataflow/' . $this->dataflow->id;
@@ -794,15 +797,17 @@ class engine {
         $log->pushProcessor(new PsrLogMessageProcessor(null, true));
 
         // Ensure step names are used if supplied.
-        $log->pushProcessor(function ($record) {
+        $log->pushProcessor(function (LogRecord $record): LogRecord {
+            $context = $record->context;
+            $message = $record->message;
             if (isset($this->currentstep)) {
-                $record['context']['step'] = $this->currentstep->name;
+                $context['step'] = $this->currentstep->name;
             }
 
-            if (isset($record['context']['step'])) {
-                $record['message'] = '{step}: ' . $record['message'];
+            if (isset($context['step'])) {
+                $message = '{step}: ' . $message;
             }
-            return $record;
+            return $record->with(message: $message, context: $context);
         });
 
         // Tweak the default datetime output to include microseconds.
@@ -835,7 +840,7 @@ class engine {
             $dataflowrunlogpath = $CFG->dataroot . DIRECTORY_SEPARATOR .
                 'tool_dataflows' . DIRECTORY_SEPARATOR .
                 $this->dataflow->id . DIRECTORY_SEPARATOR .
-                $rundateformat . '_' . $this->run->name . '.log';
+                $rundateformat . '_' . ($this->run->name ?? 'dry') . '.log';
 
             $streamhandler = new StreamHandler($dataflowrunlogpath, $minloglevel);
             $streamhandler->setFormatter($lineformatter);
@@ -878,7 +883,7 @@ class engine {
                 continue;
             }
 
-            $this->log('Sending abort notification email.', [], Logger::NOTICE);
+            $this->log('Sending abort notification email.', [], Level::Notice);
             $context = [
                 'flowname' => $this->dataflow->get('name'),
                 'run' => $this->run->get('id'),

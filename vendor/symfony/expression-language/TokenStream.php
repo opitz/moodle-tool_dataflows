@@ -20,15 +20,11 @@ class TokenStream
 {
     public $current;
 
-    private $tokens;
-    private $position = 0;
-    private $expression;
+    private array $tokens;
+    private int $position = 0;
+    private string $expression;
 
-    /**
-     * @param array  $tokens     An array of tokens
-     * @param string $expression
-     */
-    public function __construct(array $tokens, $expression = '')
+    public function __construct(array $tokens, string $expression = '')
     {
         $this->tokens = $tokens;
         $this->current = $tokens[0];
@@ -37,16 +33,16 @@ class TokenStream
 
     /**
      * Returns a string representation of the token stream.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode("\n", $this->tokens);
     }
 
     /**
      * Sets the pointer to the next token and returns the old one.
+     *
+     * @return void
      */
     public function next()
     {
@@ -60,13 +56,11 @@ class TokenStream
     }
 
     /**
-     * Tests a token.
-     *
-     * @param array|int   $type    The type to test
-     * @param string|null $value   The token value
      * @param string|null $message The syntax error message
+     *
+     * @return void
      */
-    public function expect($type, $value = null, $message = null)
+    public function expect(string $type, ?string $value = null, ?string $message = null)
     {
         $token = $this->current;
         if (!$token->test($type, $value)) {
@@ -77,20 +71,16 @@ class TokenStream
 
     /**
      * Checks if end of stream was reached.
-     *
-     * @return bool
      */
-    public function isEOF()
+    public function isEOF(): bool
     {
         return Token::EOF_TYPE === $this->current->type;
     }
 
     /**
      * @internal
-     *
-     * @return string
      */
-    public function getExpression()
+    public function getExpression(): string
     {
         return $this->expression;
     }
