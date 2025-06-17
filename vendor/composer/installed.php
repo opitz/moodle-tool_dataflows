@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-composer-update',
         'version' => 'dev-composer-update',
-        'reference' => 'd5aed51ff9d282589547fac92f816d6ee2b539d9',
+        'reference' => 'd5c182d28602170934684198c1d846673f648771',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,16 +13,16 @@
         '__root__' => array(
             'pretty_version' => 'dev-composer-update',
             'version' => 'dev-composer-update',
-            'reference' => 'd5aed51ff9d282589547fac92f816d6ee2b539d9',
+            'reference' => 'd5c182d28602170934684198c1d846673f648771',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '3.9.0',
-            'version' => '3.9.0.0',
-            'reference' => '10d85740180ecba7896c87e06a166e0c95a0e3b6',
+            'pretty_version' => '2.10.0',
+            'version' => '2.10.0.0',
+            'reference' => '5cf826f2991858b54d5c3809bee745560a1042a7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -112,8 +112,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache-implementation' => array(
