@@ -677,7 +677,7 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string|Stringable $message The log message
+     * @param string|\Stringable $message The log message
      * @param mixed[]           $context The log context
      */
     public function emergency(string|\Stringable $message, array $context = []): void
