@@ -2279,6 +2279,6 @@
             "install-path": "../symfony/yaml"
         }
     ],
-    "dev": false,
+    "dev": true,
     "dev-package-names": []
 }
