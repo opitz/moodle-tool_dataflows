@@ -680,7 +680,7 @@ class Logger implements LoggerInterface, ResettableInterface
      * @param string    $message The log message
      * @param mixed[]   $context The log context
      */
-    public function emergency(string $message, array $context = []): void
+    public function emergency($message, array $context = []): void
     {
         $this->addRecord(Level::Emergency, (string) $message, $context);
     }
