@@ -13,7 +13,7 @@ jobs:
       codechecker_max_warnings: 0 # CI should now fail on phpcs / code checker warnings.
       disable_behat: true
       disable_grunt: true
-      min_php: 8.1
+      min_php: 8.2
       extra_plugin_runners: |
           sudo sed -i 's/azure\.//' /etc/apt/sources.list
           sudo apt-get update
